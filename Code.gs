@@ -5,6 +5,7 @@ var REPLY_URL = 'https://api.line.me/v2/bot/message/reply';
 var SPREAD_SHEET_ID = prop.SPREAD_SHEET_ID;
 var spreadsheet = SpreadsheetApp.openById(SPREAD_SHEET_ID);
 var sheet = spreadsheet.getSheetByName('log');
+var debugSheet = spreadsheet.getSheetByName('debug');
 
 
 function doPost(e){
@@ -29,7 +30,7 @@ function doPost(e){
   let time =  Hour + ":" + Min;
   time = "・" + time.toString();
   let msg;
-  if(userMessage == "リスト"){
+  if(userMessage == "リストちょうだい"){
     let msgList = sendSummary("♡ここまでのまとめ♡", USER_ID);
     msg = [{
         'type':'text',
@@ -194,10 +195,7 @@ function quickReply(userMessage){
     }
   }];
 
-  if(userMessage.match(/.{1,3}ほかのメモ$/)){
-    msg = msgAccident;
-    return msg;
-  } else if(userMessage.match(/.{1,3}おちっち|うんちっち$/)){
+  if(userMessage.match(/.{1,3}おちっち|うんちっち$/)){
     msg = [{
         'type':'text',
         'text':`おむつ交換ありがとう♡`
@@ -283,7 +281,7 @@ function sendSummary(when, userID){
       } else if (listContent.match(/.{1,3}ミルク$/)){
         countMilk++;
       }
-      if(listContent != "リスト"){
+      if(listContent != "リストちょうだい"){
         listMsg += listTime + " "+ listContent + "\n";
       }
     }
@@ -343,4 +341,8 @@ function push_message() {
 }
 function logClear() {
   sheet.clear();
+}
+
+function debugLog(e){
+  debugSheet.appendRow([e]);
 }
