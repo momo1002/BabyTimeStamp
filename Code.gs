@@ -267,6 +267,7 @@ function sendSummary(when, userID){
   let countUnchi = 0;
   let countOppai = 0;
   let countMilk = 0;
+  let countMilkMl = 0;
 
   for(let i = 1; i < parseInt(numRow)+1; i++){
     let range = sheet.getRange(1, 2, i);
@@ -280,6 +281,8 @@ function sendSummary(when, userID){
         countOppai++;
       } else if (listContent.match(/.{1,3}ミルク$/)){
         countMilk++;
+      } else if (listContent.includes("ml") || listContent.includes("ミリ")){
+        countMilkMl += parseInt(listContent.replace(/[^0-9]/g, ''));
       }
       if(listContent != "リストちょうだい"){
         listMsg += listTime + " "+ listContent + "\n";
@@ -293,7 +296,11 @@ function sendSummary(when, userID){
       listMsg += `🤱おっぱい ${countOppai}回\n`;
     } 
     if (countMilk > 0){
-      listMsg += `🍼ミルク ${countMilk}回\n`;
+      if(countMilkMl > 0){
+        listMsg += `🍼ミルク ${countMilk}回（${countMilkMl}ml）\n`;
+      } else {
+        listMsg += `🍼ミルク ${countMilk}回\n`;
+      }
     }
     if(countUnchi > 0){
       listMsg += `💩うんち ${countUnchi}回\n`;
